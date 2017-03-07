@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <p:layout fullPage="true">
+
+        <p:layoutUnit position="north" size="63">
+            <h:graphicImage library="images" name="logobanner.jpg" />
+        </p:layoutUnit>
+
+        <p:layoutUnit position="south" size="40" >
+            Copyright © 2017 All rights reserved.
+        </p:layoutUnit>
+
+        <p:layoutUnit position="west" size="250" header="Menu">
+            <h:form>
+                <p:growl autoUpdate="true"/>
+
+                <p:panelMenu>
+                    <p:submenu label="Configuración" >                        
+                        <p:menuitem value="Barrios" outcome="/administracion/barrios.xhtml" />
+                        <p:menuitem value="Generos" outcome="/administracion/generos.xhtml" />
+                        <p:menuitem value="Estado Persona" outcome="/administracion/estadoPersona.xhtml" />
+                        <p:menuitem value="Estado Pedido" outcome="/administracion/estadoPedido.xhtml" />
+                        <p:menuitem value="Estado Producto" outcome="/administracion/estadoProducto.xhtml" />
+                        <p:menuitem value="Tipo Producto" outcome="/administracion/tipoProducto.xhtml" />
+                        <p:menuitem value="Estado Proveedor" outcome="/administracion/estadoProveedor.xhtml" />
+                    </p:submenu>
+                    <p:submenu label="Personas" >                        
+                        <p:menuitem value="Personas"  outcome="/administracion/personas.xhtml" />
+                        <p:menuitem value="Proveedores"  outcome="/administracion/proveedor.xhtml" />
+                    </p:submenu>
+                    <p:submenu label="Productos y Kits" >                        
+                        <p:menuitem value="Productos"  outcome="/administracion/productos.xhtml" />
+                    </p:submenu>
+                </p:panelMenu>
+            </h:form>
+        </p:layoutUnit>
+    </p:layout>
+</html>
+

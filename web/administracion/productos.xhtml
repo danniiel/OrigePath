@@ -1,0 +1,177 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+        <h:outputStylesheet library="css" name="estilo.css" />
+    </h:head>
+    <h:body>
+        <ui:include src="/template/template.xhtml"/>
+        <p:layoutUnit position="center">
+            <h3><p>Productos</p></h3>
+            <div class="ui-g">
+                <div class="ui-sm-12 ui-md-12 ui-lg-6">
+                    <h:form>
+                        <p:commandButton value="Nuevo" oncomplete="PF('wdlgDatos').show();" actionListener="#{productoCotrolador.setAccion('Guardar')}" update=":dlgDatos"/>
+                    </h:form>
+                </div>
+            </div>
+            <h:form id="tabla">
+                <p:dataTable id="data" var="pro" value="#{productoCotrolador.listarProductos()}">
+                    <p:column style="width:15px">
+                        <p:rowToggler />
+                    </p:column>
+                    <p:column headerText="Referencia Producto">
+                        <h:outputText value="#{pro.referenciaProducto}"/>
+                    </p:column>
+                    <p:column headerText="Nombre Producto">
+                        <h:outputText value="#{pro.nombreProducto}"/>
+                    </p:column>
+                    <p:column headerText="Cantidad Producto">
+                        <h:outputText value="#{pro.cantidadProducto}"/>
+                    </p:column>
+                    <p:column headerText="Precio Producto">
+                        <h:outputText value="#{pro.precioVenta}"/>
+                    </p:column>
+                    <p:column style="width: 20px">
+                        <p:commandLink actionListener="#{productoCotrolador.buscarProducto(pro.referenciaProducto)}" oncomplete="PF('wdlgDatos').show();" action="#{productoCotrolador.setAccion('Actualizar')}" update=":dlgDatos" styleClass="ui-icon ui-icon-pencil"/>
+                    </p:column>
+                    <p:column style="width: 20px">
+                        <p:commandLink actionListener="#{productoCotrolador.eliminarProducto(pro.referenciaProducto)}" update="data" styleClass="ui-icon ui-icon-trash">
+                            <p:confirm header="Confirmación" message="Esta seguro de eliminar el registro?" icon="ui-icon-alert"/>
+                        </p:commandLink>
+                    </p:column>
+                    <p:rowExpansion>
+                        <p:panelGrid columns="2" columnClasses="label,value" style="width:370px">
+                            <f:facet name="header">
+                                <p:graphicImage value="#{productoCotrolador.imganeP}" >
+                                    <f:param name="id" value="#{pro.referenciaProducto}" />
+                                </p:graphicImage>
+                            </f:facet>
+                            <h:outputText value="Referencia Producto"/>
+                            <h:outputText value="#{pro.referenciaProducto}"/>
+
+                            <h:outputText value="Nombre Producto"/>
+                            <h:outputText value="#{pro.nombreProducto}"/>
+
+                            <h:outputText value="Cantidad Producto"/>
+                            <h:outputText value="#{pro.cantidadProducto}"/>
+
+                            <h:outputText value="Precio Compra"/>
+                            <h:outputText value="#{pro.precioCompra}"/>
+
+                            <h:outputText value="Precio Venta"/>
+                            <h:outputText value="#{pro.precioVenta}"/>
+
+                            <h:outputText value="Gramaje"/>
+                            <h:outputText value="#{pro.gramos}"/>
+
+                            <h:outputText value="Descripcion"/>
+                            <h:outputText value="#{pro.descripcion}"/>
+
+                            <h:outputText value="Tipo Producto"/>
+                            <h:outputText value="#{pro.tipoProducto.nombreTipoProducto}"/>
+
+                            <h:outputText value="Estado Producto"/>
+                            <h:outputText value="#{pro.estadoProducto.nombreEstadoProducto}"/>
+
+                            <h:outputText value="Proveedor Producto"/>
+                            <h:outputText value="#{pro.proveedor.nombreEmpresa}"/>
+
+                        </p:panelGrid>
+                    </p:rowExpansion>
+                </p:dataTable>
+            </h:form>
+            <p:dialog header="#{productoCotrolador.accion}" widgetVar="wdlgDatos" id="dlgDatos" resizable="true" draggable="false" modal="true" appendTo="@(body)" showEffect="blind" hideEffect="blind" width="1000">
+                <h:form id="fproveedor" enctype="multipart/form-data">                    
+                    <div class="ui-fluid">
+                        <p:panelGrid columns="2" columnClasses="ui-grid-col-6,ui-grid-col-6" layout="grid" styleClass="ui-panelgrid-blank">
+                            <p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank">
+                                <p:outputLabel for="ref" value="Referencia"/>
+                                <p:inputText style="width: 100%" id="ref" value="#{productoCotrolador.productos.referenciaProducto}" required="true" 
+                                             requiredMessage="Este campo es obligatorio debe llenarlo"/>
+
+                                <p:outputLabel for="nombre" value="Nombre Producto"/>
+                                <p:inputText style="width: 100%" id="nombre" value="#{productoCotrolador.productos.nombreProducto}" required="true"
+                                             requiredMessage="Este campo es obligatorio debe llenarlo"/> 
+
+
+                                <p:outputLabel for="img" value="Imagen"/>
+                                <h:panelGroup>
+                                    <h:graphicImage id="graphImgProd" value="#{productoCotrolador.imagenProducto}" height="150" width="150"/>  
+                                    
+                                    <p:fileUpload id="img"  mode="advanced" 
+                                          fileUploadListener="#{productoCotrolador.subirImagen}"
+                                          sizeLimit="1000000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+                                          cancelLabel="Cancelar" uploadLabel="Subir" label="Elegir"
+                                          update="graphImgProd"/>                                    
+                                </h:panelGroup>
+
+                                <p:outputLabel for="cant" value="Cantidad"/>
+                                <p:inputText  id="cant" value="#{productoCotrolador.productos.cantidadProducto}" required="true"
+                                              requiredMessage="Este campo es obligatorio debe llenarlo"/>
+
+                                <p:outputLabel for="vcompra" value="Valor Compra"/>
+                                <p:inputText  id="vcompra" value="#{productoCotrolador.productos.precioCompra}" required="true"
+                                              requiredMessage="Este campo es obligatorio debe llenarlo"/> 
+                            </p:panelGrid>
+                            <p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank">
+
+                                <p:outputLabel for="vventa" value="Valor Venta"/>
+                                <p:inputText  id="vventa" value="#{productoCotrolador.productos.precioVenta}" required="true"
+                                              requiredMessage="Este campo es obligatorio debe llenarlo"/> 
+
+                                <p:outputLabel for="gramos" value="Gramaje"/>
+                                <p:inputText  id="gramos" value="#{productoCotrolador.productos.gramos}" required="true"
+                                              requiredMessage="Este campo es obligatorio debe llenarlo"/> 
+
+                                <p:outputLabel value="Tipo Producto"/>
+                                <p:selectOneMenu value="#{productoCotrolador.productos.tipoProducto}" converter="#{tipoProductoConverter}">
+                                    <f:selectItem itemLabel="--Seleccione--"/>
+                                    <f:selectItems value="#{productoCotrolador.tipoProductos}" var="tproducto" itemLabel="#{tproducto.nombreTipoProducto}" itemValue="#{tproducto}"/>
+                                </p:selectOneMenu>
+
+                                <p:outputLabel value="Estado Producto"/>
+                                <p:selectOneMenu value="#{productoCotrolador.productos.estadoProducto}" converter="#{estadoProductoConverter}">
+                                    <f:selectItem itemLabel="--Seleccione--"/>
+                                    <f:selectItems value="#{productoCotrolador.estadoProductos}" var="eproductos" itemLabel="#{eproductos.nombreEstadoProducto}" itemValue="#{eproductos}"/>
+                                </p:selectOneMenu>
+
+                                <p:outputLabel value="Proveedor Producto"/>
+                                <p:selectOneMenu value="#{productoCotrolador.productos.proveedor}" converter="#{proveedorConverter}">
+                                    <f:selectItem itemLabel="--Seleccione--"/>
+                                    <f:selectItems value="#{productoCotrolador.proveedores}" var="proveedores" itemLabel="#{proveedores.nombreEmpresa}" itemValue="#{proveedores}"/>
+                                </p:selectOneMenu>
+
+                                <p:outputLabel value="Descripción"/>
+                                <p:inputTextarea value="#{productoCotrolador.productos.descripcion}"/>
+                            </p:panelGrid>
+                        </p:panelGrid>
+                    </div>
+                    <p:commandButton value="#{productoCotrolador.accion}"  actionListener="#{productoCotrolador.operar()}" oncomplete="validar(xhr, status, args)" update=":tabla:data"/>
+                    <p:commandButton value="Cancelar"  immediate="true" oncomplete="PF('wdlgDatos').hide();"/>
+                </h:form>
+            </p:dialog>
+            <p:confirmDialog global="true" showEffect="blind" hideEffect="blind">
+                <h:form>
+                    <p:commandButton value="Sí" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                </h:form>
+            </p:confirmDialog> 
+        </p:layoutUnit>        
+        <script type="text/javascript">
+            function validar(xhr, status, args) {
+                if (args.validationFailed) {
+                    PF('wdlgDatos').jq.effect("shake", {time: 5}, 100);
+                } else {
+                    PF('wdlgDatos').hide();
+                }
+            }
+        </script>
+    </h:body>
+</html>
+

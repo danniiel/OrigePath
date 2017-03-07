@@ -1,0 +1,133 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Proveedor</title>
+        <h:outputStylesheet library="css" name="estilo.css" />
+    </h:head>
+    <h:body>
+        <ui:include src="/template/template.xhtml"/>
+        <p:layoutUnit position="center">
+            <h3><p>Proveedor</p></h3>
+            <div class="ui-g">
+                <div class="ui-sm-12 ui-md-12 ui-lg-6">
+                    <h:form>
+                        <p:commandButton value="Nuevo" oncomplete="PF('wdlgDatos').show();" actionListener="#{proveedoresControlador.setAccion('Guardar')}" update=":dlgDatos"/>
+                    </h:form>
+                </div>
+            </div>
+            <h:form id="tabla">
+                <p:dataTable var="p" id="data" value="#{proveedoresControlador.listarProveedores()}">
+                    <p:column headerText="Nit Proveedor">
+                        <h:outputText value="#{p.nitProveedor}"/>
+                    </p:column>
+                    <p:column headerText="Nombre Empresa">
+                        <h:outputText value="#{p.nombreEmpresa}"/>
+                    </p:column>
+                    <p:column headerText="Teléfono">
+                        <h:outputText value="#{p.telefono}"/>
+                    </p:column>
+                    <p:column headerText="Ext">
+                        <h:outputText value="#{p.ext}"/>
+                    </p:column>
+                    <p:column headerText="Direccion">
+                        <h:outputText value="#{p.direccion}"/>
+                    </p:column>
+                    <p:column headerText="Estado">
+                        <h:outputText value="#{p.estadoProveedor.nombreEstadoProveedor}"/>
+                    </p:column>
+                    <p:column style="width: 20px">
+                        <p:commandLink actionListener="#{proveedoresControlador.buscarProveedor(p.codigoProveedor)}" oncomplete="PF('wdlgDatos').show();" action="#{proveedoresControlador.setAccion('Actualizar')}" update=":dlgDatos" styleClass="ui-icon ui-icon-pencil"/> 
+                    </p:column>
+                    <p:column style="width: 20px">
+                        <p:commandLink actionListener="#{proveedoresControlador.eliminarProveedir(p.codigoProveedor)}" styleClass="ui-icon ui-icon-trash" update="data">
+                            <p:confirm header="Confirmación" message="Esta seguro de eliminar el registro?" icon="ui-icon-alert"/>
+                        </p:commandLink>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+            <p:dialog header="#{proveedoresControlador.accion}" widgetVar="wdlgDatos" id="dlgDatos" resizable="false" draggable="false" modal="true" appendTo="@(body)" showEffect="blind" hideEffect="blind" width="600">
+                <h:form id="fproveedor">                    
+                    <div class="ui-g">
+                        <div class="ui-sm-12 ui-md-12 ui-lg-4">
+                            <p:outputLabel for="nit" value="Nit"/>
+                        </div>
+                        <div class="ui-sm-12 ui-md-12 ui-lg-6">
+                            <p:inputText style="width: 100%" id="nit" value="#{proveedoresControlador.proveedor.nitProveedor}" required="true" 
+                                         requiredMessage="Este campo es obligatorio debe llenarlo"/>
+                        </div>
+                    </div>
+                    <div class="ui-g">                
+                        <div class="ui-sm-12 ui-md-12 ui-lg-4">
+                            <p:outputLabel for="nombre" value="Nombre Proveedor"/>
+                        </div>
+                        <div class="ui-sm-12 ui-md-12 ui-lg-6">
+                            <p:inputText style="width: 100%" id="nombre" value="#{proveedoresControlador.proveedor.nombreEmpresa}" required="true"
+                                         requiredMessage="Este campo es obligatorio debe llenarlo"/> 
+                        </div>
+                    </div>
+                    <div class="ui-g">                
+                        <div class="ui-sm-12 ui-md-12 ui-lg-4">
+                            <p:outputLabel for="telefono" value="Teléfono"/>
+                        </div>
+                        <div class="ui-sm-12 ui-md-12 ui-lg-6">
+                            <p:inputText style="width: 100%" id="telefono" value="#{proveedoresControlador.proveedor.telefono}" required="true"
+                                         requiredMessage="Este campo es obligatorio debe llenarlo"/> 
+                        </div>
+                    </div>
+                    <div class="ui-g">                
+                        <div class="ui-sm-12 ui-md-12 ui-lg-4">
+                            <p:outputLabel for="ext" value="Extension"/>
+                        </div>
+                        <div class="ui-sm-12 ui-md-12 ui-lg-6">
+                            <p:inputText style="width: 100%" id="ext" value="#{proveedoresControlador.proveedor.ext}" required="true"
+                                         requiredMessage="Este campo es obligatorio debe llenarlo"/> 
+                        </div>
+                    </div>
+                    <div class="ui-g">                
+                        <div class="ui-sm-12 ui-md-12 ui-lg-4">
+                            <p:outputLabel for="direccion" value="Dirección"/>
+                        </div>
+                        <div class="ui-sm-12 ui-md-12 ui-lg-6">
+                            <p:inputText style="width: 100%" id="direccion" value="#{proveedoresControlador.proveedor.direccion}" required="true"
+                                         requiredMessage="Este campo es obligatorio debe llenarlo"/> 
+                        </div>
+                    </div>
+                    <div class="ui-g">                
+                        <div class="ui-sm-12 ui-md-12 ui-lg-4">
+                            <p:outputLabel for="estado" value="Estado Proveedor"/>
+                        </div>
+                        <div class="ui-sm-12 ui-md-12 ui-lg-6">
+                            <p:selectOneMenu id="estado" style="width: 100%" value="#{proveedoresControlador.proveedor.estadoProveedor}" converter="#{estadoProveedorConverter}">
+                                <f:selectItem itemLabel="--Seleccione--"/>
+                                <f:selectItems value="#{proveedoresControlador.estadoProveedores}" var="eproveedor" itemLabel="#{eproveedor.nombreEstadoProveedor}" itemValue="#{eproveedor}"/>
+                            </p:selectOneMenu>
+                        </div>
+                    </div>
+                    <p:commandButton value="#{proveedoresControlador.accion}"  actionListener="#{proveedoresControlador.operar()}" oncomplete="validar(xhr, status, args)" update=":tabla:data"/>
+                    <p:commandButton value="Cancelar"  immediate="true" oncomplete="PF('wdlgDatos').hide();"/>
+                </h:form>
+            </p:dialog>
+            <p:confirmDialog global="true" showEffect="blind" hideEffect="blind">
+                <h:form>
+                    <p:commandButton value="Sí" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                </h:form>
+            </p:confirmDialog>
+        </p:layoutUnit>
+        <script type="text/javascript">
+            function validar(xhr, status, args) {
+                if (args.validationFailed) {
+                    PF('wdlgDatos').jq.effect("shake", {time: 5}, 100);
+                } else {
+                    PF('wdlgDatos').hide();
+                }
+            }
+        </script>
+    </h:body>
+</html>
+

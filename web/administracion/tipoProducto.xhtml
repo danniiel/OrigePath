@@ -1,0 +1,83 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>Facelet Title</title>
+        <h:outputStylesheet library="css" name="estilo.css" />
+    </h:head>
+    <h:body>
+        <ui:include src="/template/template.xhtml"/>
+        <p:layoutUnit position="center">
+            <h3><p>Típo Producto</p></h3>
+            <div class="ui-g">
+                <div class="ui-sm-12 ui-md-12 ui-lg-6">
+                    <h:form>
+                        <p:commandButton value="Nuevo" oncomplete="PF('wdlgDatos').show();" actionListener="#{tipoProductoControlador.setAccion('Guardar')}" update=":dlgDatos"/>
+
+                    </h:form>
+                </div>
+            </div>
+            <h:form id="ftabla">
+                <p:dataTable var="tp" id="data" value="#{tipoProductoControlador.listarTipoProductos()}" paginator="true" rows="10" paginatorPosition="bottom">
+                    <p:column headerText="Código Tipo">
+                        <h:outputText value="#{tp.idTipoProducto}"/>
+                    </p:column>
+                    <p:column headerText="Nombre Tipo">
+                        <h:outputText value="#{tp.nombreTipoProducto}"/>
+                    </p:column>
+                    <p:column style="width: 20px">
+                        <p:commandLink actionListener="#{tipoProductoControlador.buscarTipoProducto(tp.idTipoProducto)}" oncomplete="PF('wdlgDatos').show();" action="#{tipoProductoControlador.setAccion('Actualizar')}" update=":dlgDatos" styleClass="ui-icon ui-icon-pencil"/> 
+                    </p:column>
+                    <p:column style="width: 20px">
+                        <p:commandLink actionListener="#{tipoProductoControlador.eliminarTipoProducto(tp.idTipoProducto)}" styleClass="ui-icon ui-icon-trash" update="data">
+                            <p:confirm header="Confirmación" message="Esta seguro de eliminar el registro?" icon="ui-icon-alert"/>
+                        </p:commandLink>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+            <p:dialog header="#{tipoProductoControlador.accion}" widgetVar="wdlgDatos" id="dlgDatos" resizable="false" draggable="false" modal="true" appendTo="@(body)" showEffect="fade" hideEffect="fade">
+                <h:form id="fbarrio">
+                    <div class="ui-g">
+                        <div class="ui-sm-12 ui-md-12 ui-lg-4">
+                            <p:outputLabel for="codigo" value="Código Tipo "/>
+                        </div>
+                        <div class="ui-sm-12 ui-md-12 ui-lg-6">
+                            <p:inputText style="width: 100%" id="codigo" value="#{tipoProductoControlador.tipoProducto.idTipoProducto}" required="true" 
+                                         requiredMessage="Este campo es obligatorio debe llenarlo"/>
+                        </div>
+                    </div>
+                    <div class="ui-g">                
+                        <div class="ui-sm-12 ui-md-12 ui-lg-4">
+                            <p:outputLabel for="nombre" value="Nombre Tipo "/>
+                        </div>
+                        <div class="ui-sm-12 ui-md-12 ui-lg-6">
+                            <p:inputText style="width: 100%" id="nombre" value="#{tipoProductoControlador.tipoProducto.nombreTipoProducto}" required="true"
+                                         requiredMessage="Este campo es obligatorio debe llenarlo"/> 
+                        </div>
+                    </div>
+                    <p:commandButton value="#{tipoProductoControlador.accion}"  actionListener="#{tipoProductoControlador.operar()}" oncomplete="validar(xhr, status, args)" update=":ftabla:data"/>
+                    <p:commandButton value="Cancelar"  immediate="true" oncomplete="PF('wdlgDatos').hide();"/>
+                </h:form>
+            </p:dialog>
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                <h:form>
+                    <p:commandButton value="Sí" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                </h:form>
+            </p:confirmDialog>            
+        </p:layoutUnit>
+        <script type="text/javascript">
+            function validar(xhr, status, args) {
+                if (args.validationFailed) {
+                    PF('wdlgDatos').jq.effect("shake", {time: 5}, 100);
+                } else {
+                    PF('wdlgDatos').hide();
+                }
+            }
+        </script>
+    </h:body>
+</html>
+

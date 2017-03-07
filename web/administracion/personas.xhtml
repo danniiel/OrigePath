@@ -1,0 +1,215 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+        <h:outputStylesheet library="css" name="estilo.css" />
+    </h:head>
+    <h:body>
+        <ui:include src="/template/template.xhtml"/>
+        <p:layoutUnit position="center">
+            <h3><p>Personas</p></h3>
+            <div class="ui-g">
+                <div class="ui-sm-12 ui-md-12 ui-lg-6">
+                    <h:form>
+                        <p:commandButton value="Nuevo" oncomplete="PF('wdlgDatos').show();" actionListener="#{personasControlador.setAccion('Guardar')}" update=":dlgDatos"/>
+                    </h:form>
+                </div>
+            </div>
+            <h:form id="tabla">
+                <p:dataTable id="data" var="p" value="#{personasControlador.listarPersonas()}">
+                    <p:column style="width:15px">
+                        <p:rowToggler/>
+                    </p:column>
+                    <p:column headerText="Cedula">
+                        <h:outputText value="#{p.cedula}" />
+                    </p:column>
+                    <p:column headerText="Nombre">
+                        <h:outputText value="#{p.nombres}"/>
+                    </p:column>
+                    <p:column headerText="Primer Apellido">
+                        <h:outputText value="#{p.primerApellido}"/>
+                    </p:column>
+                    <p:column headerText="Segundo Apellido">
+                        <h:outputText value="#{p.segundoApellido}"/>
+                    </p:column>                    
+                    <p:column style="width: 20px">
+                        <p:commandLink actionListener="#{personasControlador.buscarPersona(p.cedula)}" oncomplete="PF('wdlgDatos').show();" action="#{personasControlador.setAccion('Actualizar')}" update="dlgDatos" styleClass="ui-icon ui-icon-pencil"/>
+                    </p:column>
+                    <p:column style="width: 20px">
+                        <p:commandLink actionListener="#{personasControlador.eliminarPersona(p.cedula)}" update="tabla:data" styleClass="ui-icon ui-icon-trash">
+                            <p:confirm header="Confirmación" message="Esta seguro de eliminar el registro?" icon="ui-icon-alert"/>
+                        </p:commandLink>
+                    </p:column>
+                    <p:rowExpansion>
+                        <p:panelGrid columns="2" columnClasses="grid,grid">
+                            <f:facet name="header" >
+                                <h:outputText value="Informacion General"/>
+                            </f:facet>
+                            <p:panelGrid columns="2">
+                                <h:outputText value="Cedula"/>
+                                <h:outputText value="#{p.cedula}"/>
+                                <h:outputText value="Nombre"/>
+                                <h:outputText value="#{p.nombres}"/>
+                                <h:outputText value="Primer Apellido"/>
+                                <h:outputText value="#{p.primerApellido}"/>
+                                <h:outputText value="Segundo Apellido"/>
+                                <h:outputText value="#{p.segundoApellido}"/>
+                                <h:outputText value="Fecha nacimineto"/>
+                                <h:outputText value="#{p.fechaNacimiento}"/>
+                                <h:outputText value="Genero"/>
+                                <h:outputText value="#{p.genero.nombreGenero}"/>
+                                <h:outputText value="Estado Civil"/>
+                                <h:outputText value="#{p.estadoCivil.nombreEstadoCivil}"/>
+                                <h:outputText value="Estado Persona"/>
+                                <h:outputText value="#{p.estadoPersona.nombreEstadoPersonas}"/>                        
+                                <h:outputText value="Ocupacion"/>
+                                <h:outputText value="#{p.ocupacion}"/>                        
+                                <h:outputText value="Referido"/>
+                                <h:outputText value="#{p.referido.nombres}"/>                        
+                            </p:panelGrid>
+                            <p:panelGrid columns="2" style="margin-top: -27px;">
+                                <h:outputText value="Telefono"/>
+                                <h:outputText value="#{p.telefono}"/>
+                                <h:outputText value="Celular"/>
+                                <h:outputText value="#{p.celular}"/>
+                                <h:outputText value="Correo"/>
+                                <h:outputText value="#{p.correo}"/>
+                                <h:outputText value="Barrio"/>
+                                <h:outputText value="#{p.barrio.nombreBarrio}"/>
+                                <h:outputText value="Direccion"/>
+                                <h:outputText value="#{p.direccion}"/>
+                                <h:outputText value="Usuario"/>
+                                <h:outputText value="#{p.usuario}"/>
+                                <h:outputText value="Contraseña"/>
+                                <h:outputText value="#{p.contrasena}"/>
+                                <h:outputText value="Rol"/>
+                                <h:outputText value="#{p.rol.nombreRol}"/>
+                                <h:outputText value="Nivel Educacion"/>
+                                <h:outputText value="#{p.nivelEducacion}"/>                        
+                            </p:panelGrid>
+                        </p:panelGrid>
+                    </p:rowExpansion>
+                </p:dataTable>
+            </h:form>
+            <p:dialog header="#{personasControlador.accion}" widgetVar="wdlgDatos" id="dlgDatos" resizable="true" draggable="false" modal="true" appendTo="@(body)" showEffect="blind" hideEffect="blind" width="1000">
+                <h:form id="fpersona" enctype="multipart/form-data">                    
+                    <div class="ui-fluid">
+                        <p:panelGrid columns="2" columnClasses="ui-grid-col-6,ui-grid-col-6" layout="grid" styleClass="ui-panelgrid-blank">
+                            <p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank">
+                                <p:outputLabel for="id" value="Cedula"/>
+                                <p:inputText style="width: 100%" id="id" value="#{personasControlador.personas.cedula}" required="true" 
+                                             requiredMessage="Este campo es obligatorio debe llenarlo"/>
+
+                                <p:outputLabel for="nombre" value="Nombre"/>
+                                <p:inputText style="width: 100%" id="nombre" value="#{personasControlador.personas.nombres}" required="true"
+                                             requiredMessage="Este campo es obligatorio debe llenarlo"/> 
+
+                                <p:outputLabel for="apellido1" value="Primer Apellido"/>
+                                <p:inputText  id="apellido1" value="#{personasControlador.personas.primerApellido}" required="true"
+                                              requiredMessage="Este campo es obligatorio debe llenarlo"/>
+
+                                <p:outputLabel for="apellido2" value="Segundo Apellido"/>
+                                <p:inputText  id="apellido2" value="#{personasControlador.personas.segundoApellido}" required="true"
+                                              requiredMessage="Este campo es obligatorio debe llenarlo"/> 
+
+                                <p:outputLabel for="fechaNac" value="Fecha Nacimiento"/>
+                                <p:calendar  id="fechaNac" value="#{personasControlador.personas.fechaNacimiento}" navigator="true" pattern="dd/MMM/yyyy" required="true"
+                                              requiredMessage="Este campo es obligatorio debe llenarlo"/> 
+
+                                <p:outputLabel for="correo" value="Correo"/>
+                                <p:inputText  id="correo" value="#{personasControlador.personas.correo}" required="true"
+                                              requiredMessage="Este campo es obligatorio debe llenarlo"/> 
+
+                                <p:outputLabel for="tel" value="Teléfono"/>
+                                <p:inputText  id="tel" value="#{personasControlador.personas.telefono}" required="true"
+                                              requiredMessage="Este campo es obligatorio debe llenarlo"/> 
+
+                                <p:outputLabel for="cel" value="Celular"/>
+                                <p:inputText  id="cel" value="#{personasControlador.personas.celular}" required="true"
+                                              requiredMessage="Este campo es obligatorio debe llenarlo"/> 
+
+                                <p:outputLabel for="dir" value="Dirección"/>
+                                <p:inputText  id="dir" value="#{personasControlador.personas.direccion}" required="true"
+                                              requiredMessage="Este campo es obligatorio debe llenarlo"/> 
+
+                                <p:outputLabel for="barrios" value="Barrio"/>
+                                <p:selectOneMenu id="barrios" value="#{personasControlador.personas.barrio}" converter="#{barrioConverter}">
+                                    <f:selectItem itemLabel="--Seleccione--"/>
+                                    <f:selectItems value="#{personasControlador.barrios}" var="barrio" itemLabel="#{barrio.nombreBarrio}" itemValue="#{barrio}"/>
+                                </p:selectOneMenu>
+                            </p:panelGrid>
+                            <p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank">
+
+                                <p:outputLabel for="generos" value="Genero"/>
+                                <p:selectOneMenu id="generos" value="#{personasControlador.personas.genero}" converter="#{generoConverter}">
+                                    <f:selectItem itemLabel="--Seleccione--"/>
+                                    <f:selectItems value="#{personasControlador.generos}" var="genero" itemLabel="#{genero.nombreGenero}" itemValue="#{genero}"/>
+                                </p:selectOneMenu>
+
+                                <p:outputLabel value="Estado Civil"/>
+                                <p:selectOneMenu value="#{personasControlador.personas.estadoCivil}" converter="#{estadoCivilConverter}">
+                                    <f:selectItem itemLabel="--Seleccione--"/>
+                                    <f:selectItems value="#{personasControlador.estadoCiviles}" var="ecivil" itemLabel="#{ecivil.nombreEstadoCivil}" itemValue="#{ecivil}"/>
+                                </p:selectOneMenu>
+
+                                <p:outputLabel for="edu" value="Nivel Educación"/>
+                                <p:inputText  id="edu" value="#{personasControlador.personas.nivelEducacion}" required="true"
+                                              requiredMessage="Este campo es obligatorio debe llenarlo"/>
+
+                                <p:outputLabel value="Estado Persona"/>
+                                <p:selectOneMenu value="#{personasControlador.personas.estadoPersona}" converter="#{estadoPersonaConverter}">
+                                    <f:selectItem itemLabel="--Seleccione--"/> 
+                                    <f:selectItems value="#{personasControlador.estadoPersonas}" var="epersona" itemLabel="#{epersona.nombreEstadoPersonas}" itemValue="#{epersona}"/>
+                                </p:selectOneMenu>
+
+                                <p:outputLabel value="Ocupacion"/>
+                                <p:inputTextarea value="#{personasControlador.personas.ocupacion}"/>
+
+                                <p:outputLabel value="Referido"/>
+                                <p:selectOneMenu value="#{personasControlador.personas.referido}" converter="#{personaConverter}">
+                                    <f:selectItem itemLabel="--Seleccione--"/>
+                                    <f:selectItems value="#{personasControlador.listPersonas}" var="referido" itemLabel="#{referido.nombres}" itemValue="#{referido}"/>
+                                </p:selectOneMenu>
+
+                                <p:outputLabel for="usu" value="Usuario"/>
+                                <p:inputText id="usu" value="#{personasControlador.personas.usuario}"/>             
+
+                                <p:outputLabel for="con" value="Contraseña"/>
+                                <p:inputText id="con" value="#{personasControlador.personas.contrasena}"/>             
+
+                                <p:outputLabel value="Rol" />
+                                <p:selectOneMenu value="#{personasControlador.personas.rol}" converter="#{rolConverter}">
+                                    <f:selectItem itemLabel="--Seleccione--"/>
+                                    <f:selectItems value="#{personasControlador.roles}" var="rol" itemLabel="#{rol.nombreRol}" itemValue="#{rol}"/>
+                                </p:selectOneMenu>
+                            </p:panelGrid>
+                        </p:panelGrid>
+                    </div>
+                    <p:commandButton value="#{personasControlador.accion}"  actionListener="#{personasControlador.operar()}" oncomplete="validar(xhr, status, args)" update=":tabla:data"/>
+                    <p:commandButton value="Cancelar"  immediate="true" oncomplete="PF('wdlgDatos').hide();"/>
+                </h:form>
+            </p:dialog>
+            <p:confirmDialog global="true" showEffect="blind" hideEffect="blind">
+                <h:form>
+                    <p:commandButton value="Sí" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                </h:form>
+            </p:confirmDialog> 
+        </p:layoutUnit>
+        <script type="text/javascript">
+            function validar(xhr, status, args) {
+                if (args.validationFailed) {
+                    PF('wdlgDatos').jq.effect("shake", {time: 5}, 100);
+                } else {
+                    PF('wdlgDatos').hide();
+                }
+            }
+        </script>
+    </h:body>
+</html>
+

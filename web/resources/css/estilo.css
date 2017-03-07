@@ -1,0 +1,72 @@
+.ui-layout-unit-header{
+    color: #ffffff !important;
+    background: #00AC98 !important;
+    border-radius: 0;
+}
+.ui-inputtext{
+    border-color: #00AC98 !important;
+    border-radius: initial !important;
+}
+
+.ui-selectonemenu{
+    border-color: #00AC98 !important;
+    border-radius: initial !important;
+}
+
+.ui-datatable .ui-state-default{
+    background: #00AC98 !important;
+    color: #ffffff !important;
+    border-radius: initial !important;
+    /*border-color: #ffffff !important;*/
+}
+
+.ui-inputtextarea{
+    border-color: #00AC98 !important;
+    border-radius: initial !important;
+}
+.panelimg{
+    border-color: #00AC98 !important;
+    border-radius: initial !important;
+
+}
+.ui-button{
+    background: #00AC98 !important;
+    color: #ffffff !important;
+    /* border-color: #ffffff; */
+    border-radius: 0 !important;
+}
+
+.ui-panelmenu .ui-panelmenu-header{
+    height: 40px !important;
+    border-radius: 0;
+    background: #00AC98;
+    color: white;
+}
+.ui-panelmenu .ui-panelmenu-header a{    
+    color: white;
+}
+
+h3{
+    background-color: #00AC98;
+    height: 50px;
+    margin-top: -25px;
+    color: white;
+}
+p{
+    position: relative;
+    left: 0;
+    right: 0;
+    top: 15px;
+    bottom: 0;
+}
+.img-container{
+    width: 100%;
+    height: 100%;
+}
+.img-position{
+    margin-left: 15%;
+    margin-top: 8%;
+    margin-bottom: 0;
+    margin-right: 0;
+    position: relative;
+}
