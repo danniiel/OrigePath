@@ -17,15 +17,22 @@ import co.com.origenpath.utils.jsfUtils;
 import java.io.ByteArrayInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.Serializable;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.NoneScoped;
+import javax.faces.bean.RequestScoped;
+import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.faces.event.PhaseId;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -38,7 +45,7 @@ import org.primefaces.model.StreamedContent;
  * @author daniel
  */
 @ManagedBean
-@ViewScoped
+@SessionScoped
 public class ProductoCotrolador implements Serializable {
 
     @EJB
@@ -56,7 +63,7 @@ public class ProductoCotrolador implements Serializable {
     private List<Proveedor> proveedores;
 
     private String imagenProducto;
-    private StreamedContent file;
+//    private StreamedContent file;
     private StreamedContent imganeP;
     private String accion;
 
@@ -68,6 +75,7 @@ public class ProductoCotrolador implements Serializable {
         proveedores = listarProveedores();
     }
 
+        
     public String getAccion() {
         return accion;
     }
@@ -116,13 +124,13 @@ public class ProductoCotrolador implements Serializable {
         this.imagenProducto = imagenProducto;
     }
 
-    public StreamedContent getFile() {
-        return file;
-    }
-
-    public void setFile(StreamedContent file) {
-        this.file = file;
-    }
+//    public StreamedContent getFile() {
+//        return file;
+//    }
+//
+//    public void setFile(StreamedContent file) {
+//        this.file = file;
+//    }
 
 //    public StreamedContent getImganeP() {
 //        return imganeP;
@@ -131,10 +139,19 @@ public class ProductoCotrolador implements Serializable {
         this.imganeP = imganeP;
     }
 
+    public void reset(){
+        
+            productos = new Productos();
+            setAccion(null);
+            productos.getImagenProducto();
+        
+    }
+    
     public void operar() {
         switch (accion) {
             case "Guardar":
                 this.guardarProducto();
+                reset();
                 break;
             case "Actualizar":
                 this.modificarProducto();
@@ -145,7 +162,7 @@ public class ProductoCotrolador implements Serializable {
     public void guardarProducto() {
         try {
             productosFacadeLocal.create(productos);
-            jsfUtils.addSuccessMessage("Registro Guardado Correctamente");
+            jsfUtils.addSuccessMessage("Registro Guardado Correctamente");            
         } catch (Exception e) {
             jsfUtils.addErrorMessage("Error al guardar el registro verifique los datos o pongase en contacto con el adminstrador del sistema");
         }
@@ -222,11 +239,15 @@ public class ProductoCotrolador implements Serializable {
     public StreamedContent getImganeP() throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
 
-        HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
-        String id = request.getParameter("id");
-        byte[] img = obtenerImagen("1956");        
-        return new DefaultStreamedContent(new ByteArrayInputStream(img));
-
+        if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
+            return new DefaultStreamedContent();
+        } else {
+            HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
+            String id = request.getParameter("id");
+//        String id = context.getExternalContext().getRequestParameterMap().get("id");
+            byte[] img = obtenerImagen(id);
+            return new DefaultStreamedContent(new ByteArrayInputStream(img));
+        }
     }
 
     public byte[] obtenerImagen(String id) throws IOException {

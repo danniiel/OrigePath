@@ -8,6 +8,11 @@
     border-radius: initial !important;
 }
 
+.hasDatepicker{
+    border-color: #00AC98 !important;
+    border-radius: initial !important;
+}
+
 .ui-selectonemenu{
     border-color: #00AC98 !important;
     border-radius: initial !important;

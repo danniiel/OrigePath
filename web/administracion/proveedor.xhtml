@@ -21,7 +21,7 @@
                 </div>
             </div>
             <h:form id="tabla">
-                <p:dataTable var="p" id="data" value="#{proveedoresControlador.listarProveedores()}">
+                <p:dataTable var="p" id="data" value="#{proveedoresControlador.listarProveedores()}" paginator="true" rows="10" paginatorPosition="bottom">
                     <p:column headerText="Nit Proveedor">
                         <h:outputText value="#{p.nitProveedor}"/>
                     </p:column>

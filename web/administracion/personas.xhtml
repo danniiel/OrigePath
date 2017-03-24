@@ -12,7 +12,7 @@
     <h:body>
         <ui:include src="/template/template.xhtml"/>
         <p:layoutUnit position="center">
-            <h3><p>Personas</p></h3>
+            <h3><p><p:spacer width="5"/>Personas</p></h3>
             <div class="ui-g">
                 <div class="ui-sm-12 ui-md-12 ui-lg-6">
                     <h:form>
@@ -21,7 +21,7 @@
                 </div>
             </div>
             <h:form id="tabla">
-                <p:dataTable id="data" var="p" value="#{personasControlador.listarPersonas()}">
+                <p:dataTable id="data" var="p" value="#{personasControlador.listarPersonas()}" paginator="true" rows="10" paginatorPosition="bottom">
                     <p:column style="width:15px">
                         <p:rowToggler/>
                     </p:column>
@@ -114,12 +114,12 @@
                                               requiredMessage="Este campo es obligatorio debe llenarlo"/>
 
                                 <p:outputLabel for="apellido2" value="Segundo Apellido"/>
-                                <p:inputText  id="apellido2" value="#{personasControlador.personas.segundoApellido}" required="true"
-                                              requiredMessage="Este campo es obligatorio debe llenarlo"/> 
+                                <p:inputText  id="apellido2" value="#{personasControlador.personas.segundoApellido}"/> 
 
                                 <p:outputLabel for="fechaNac" value="Fecha Nacimiento"/>
-                                <p:calendar  id="fechaNac" value="#{personasControlador.personas.fechaNacimiento}" navigator="true" pattern="dd/MMM/yyyy" required="true"
-                                              requiredMessage="Este campo es obligatorio debe llenarlo"/> 
+                                <p:calendar  id="fechaNac" value="#{personasControlador.personas.fechaNacimiento}" navigator="true" showOn="button" pattern="dd/MMM/yyyy"  required="true"
+                                             requiredMessage="Este campo es obligatorio debe llenarlo">
+                                </p:calendar> 
 
                                 <p:outputLabel for="correo" value="Correo"/>
                                 <p:inputText  id="correo" value="#{personasControlador.personas.correo}" required="true"
@@ -130,15 +130,14 @@
                                               requiredMessage="Este campo es obligatorio debe llenarlo"/> 
 
                                 <p:outputLabel for="cel" value="Celular"/>
-                                <p:inputText  id="cel" value="#{personasControlador.personas.celular}" required="true"
-                                              requiredMessage="Este campo es obligatorio debe llenarlo"/> 
+                                <p:inputText  id="cel" value="#{personasControlador.personas.celular}"/> 
 
                                 <p:outputLabel for="dir" value="Dirección"/>
                                 <p:inputText  id="dir" value="#{personasControlador.personas.direccion}" required="true"
                                               requiredMessage="Este campo es obligatorio debe llenarlo"/> 
 
                                 <p:outputLabel for="barrios" value="Barrio"/>
-                                <p:selectOneMenu id="barrios" value="#{personasControlador.personas.barrio}" converter="#{barrioConverter}">
+                                <p:selectOneMenu id="barrios" value="#{personasControlador.personas.barrio}" converter="#{barrioConverter}" required="true" requiredMessage="Este campo es obligatorio debe llenarlo">
                                     <f:selectItem itemLabel="--Seleccione--"/>
                                     <f:selectItems value="#{personasControlador.barrios}" var="barrio" itemLabel="#{barrio.nombreBarrio}" itemValue="#{barrio}"/>
                                 </p:selectOneMenu>
@@ -146,13 +145,13 @@
                             <p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank">
 
                                 <p:outputLabel for="generos" value="Genero"/>
-                                <p:selectOneMenu id="generos" value="#{personasControlador.personas.genero}" converter="#{generoConverter}">
+                                <p:selectOneMenu id="generos" value="#{personasControlador.personas.genero}" converter="#{generoConverter}" required="true" requiredMessage="Este campo es obligatorio debe llenarlo">
                                     <f:selectItem itemLabel="--Seleccione--"/>
                                     <f:selectItems value="#{personasControlador.generos}" var="genero" itemLabel="#{genero.nombreGenero}" itemValue="#{genero}"/>
                                 </p:selectOneMenu>
 
-                                <p:outputLabel value="Estado Civil"/>
-                                <p:selectOneMenu value="#{personasControlador.personas.estadoCivil}" converter="#{estadoCivilConverter}">
+                                <p:outputLabel for="ec" value="Estado Civil"/>
+                                <p:selectOneMenu id="ec" value="#{personasControlador.personas.estadoCivil}" converter="#{estadoCivilConverter}" required="true" requiredMessage="Este campo es obligatorio debe llenarlo">
                                     <f:selectItem itemLabel="--Seleccione--"/>
                                     <f:selectItems value="#{personasControlador.estadoCiviles}" var="ecivil" itemLabel="#{ecivil.nombreEstadoCivil}" itemValue="#{ecivil}"/>
                                 </p:selectOneMenu>
@@ -161,14 +160,14 @@
                                 <p:inputText  id="edu" value="#{personasControlador.personas.nivelEducacion}" required="true"
                                               requiredMessage="Este campo es obligatorio debe llenarlo"/>
 
-                                <p:outputLabel value="Estado Persona"/>
-                                <p:selectOneMenu value="#{personasControlador.personas.estadoPersona}" converter="#{estadoPersonaConverter}">
+                                <p:outputLabel for="ep" value="Estado Persona"/>
+                                <p:selectOneMenu id="ep" value="#{personasControlador.personas.estadoPersona}" converter="#{estadoPersonaConverter}" required="true" requiredMessage="Este campo es obligatorio debe llenarlo">
                                     <f:selectItem itemLabel="--Seleccione--"/> 
                                     <f:selectItems value="#{personasControlador.estadoPersonas}" var="epersona" itemLabel="#{epersona.nombreEstadoPersonas}" itemValue="#{epersona}"/>
                                 </p:selectOneMenu>
 
-                                <p:outputLabel value="Ocupacion"/>
-                                <p:inputTextarea value="#{personasControlador.personas.ocupacion}"/>
+                                <p:outputLabel for="oc" value="Ocupacion"/>
+                                <p:inputTextarea id="oc" value="#{personasControlador.personas.ocupacion}" required="true" requiredMessage="Este campo es obligatorio debe llenarlo"/>
 
                                 <p:outputLabel value="Referido"/>
                                 <p:selectOneMenu value="#{personasControlador.personas.referido}" converter="#{personaConverter}">
@@ -177,13 +176,13 @@
                                 </p:selectOneMenu>
 
                                 <p:outputLabel for="usu" value="Usuario"/>
-                                <p:inputText id="usu" value="#{personasControlador.personas.usuario}"/>             
+                                <p:inputText id="usu" value="#{personasControlador.personas.usuario}" required="true" requiredMessage="Este campo es obligatorio debe llenarlo"/>             
 
                                 <p:outputLabel for="con" value="Contraseña"/>
-                                <p:inputText id="con" value="#{personasControlador.personas.contrasena}"/>             
+                                <p:inputText id="con" value="#{personasControlador.personas.contrasena}" required="true" requiredMessage="Este campo es obligatorio debe llenarlo"/>             
 
-                                <p:outputLabel value="Rol" />
-                                <p:selectOneMenu value="#{personasControlador.personas.rol}" converter="#{rolConverter}">
+                                <p:outputLabel value="Rol" for="rol"/>
+                                <p:selectOneMenu id="rol" value="#{personasControlador.personas.rol}" converter="#{rolConverter}" required="true" requiredMessage="Este campo es obligatorio debe llenarlo">
                                     <f:selectItem itemLabel="--Seleccione--"/>
                                     <f:selectItems value="#{personasControlador.roles}" var="rol" itemLabel="#{rol.nombreRol}" itemValue="#{rol}"/>
                                 </p:selectOneMenu>

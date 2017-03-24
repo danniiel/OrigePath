@@ -16,12 +16,13 @@
             <div class="ui-g">
                 <div class="ui-sm-12 ui-md-12 ui-lg-6">
                     <h:form>
-                        <p:commandButton value="Nuevo" oncomplete="PF('wdlgDatos').show();" actionListener="#{productoCotrolador.setAccion('Guardar')}" update=":dlgDatos"/>
+                        <p:commandButton value="Nuevo" oncomplete="PF('wdlgDatos').show();"  actionListener="#{productoCotrolador.setAccion('Guardar')}" update=":dlgDatos"/>
+                            
                     </h:form>
                 </div>
             </div>
             <h:form id="tabla">
-                <p:dataTable id="data" var="pro" value="#{productoCotrolador.listarProductos()}">
+                <p:dataTable id="data" var="pro" value="#{productoCotrolador.listarProductos()}" paginator="true" rows="5" paginatorPosition="bottom">
                     <p:column style="width:15px">
                         <p:rowToggler />
                     </p:column>
@@ -48,7 +49,7 @@
                     <p:rowExpansion>
                         <p:panelGrid columns="2" columnClasses="label,value" style="width:370px">
                             <f:facet name="header">
-                                <p:graphicImage value="#{productoCotrolador.imganeP}" >
+                                <p:graphicImage value="#{productoCotrolador.imganeP}" style="width: 100px">
                                     <f:param name="id" value="#{pro.referenciaProducto}" />
                                 </p:graphicImage>
                             </f:facet>
@@ -86,7 +87,7 @@
                     </p:rowExpansion>
                 </p:dataTable>
             </h:form>
-            <p:dialog header="#{productoCotrolador.accion}" widgetVar="wdlgDatos" id="dlgDatos" resizable="true" draggable="false" modal="true" appendTo="@(body)" showEffect="blind" hideEffect="blind" width="1000">
+            <p:dialog header="#{productoCotrolador.accion}" widgetVar="wdlgDatos" id="dlgDatos" resizable="true" draggable="false" modal="true" appendTo="@(body)" showEffect="blind" hideEffect="blind" width="1200">
                 <h:form id="fproveedor" enctype="multipart/form-data">                    
                     <div class="ui-fluid">
                         <p:panelGrid columns="2" columnClasses="ui-grid-col-6,ui-grid-col-6" layout="grid" styleClass="ui-panelgrid-blank">
@@ -152,7 +153,7 @@
                             </p:panelGrid>
                         </p:panelGrid>
                     </div>
-                    <p:commandButton value="#{productoCotrolador.accion}"  actionListener="#{productoCotrolador.operar()}" oncomplete="validar(xhr, status, args)" update=":tabla:data"/>
+                    <p:commandButton value="#{productoCotrolador.accion}" actionListener="#{productoCotrolador.operar()}" oncomplete="validar(xhr, status, args)" update=":tabla:data"/>                        
                     <p:commandButton value="Cancelar"  immediate="true" oncomplete="PF('wdlgDatos').hide();"/>
                 </h:form>
             </p:dialog>
