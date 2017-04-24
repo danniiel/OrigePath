@@ -6,7 +6,7 @@
     <p:layout fullPage="true">
 
         <p:layoutUnit position="north" size="63">
-            <h:graphicImage library="images" name="logobanner.jpg" />
+            <p:link outcome="inicio.xhtml"><h:graphicImage library="images" name="logobanner.jpg" /></p:link>
         </p:layoutUnit>
 
         <p:layoutUnit position="south" size="40" >
@@ -36,6 +36,9 @@
                     </p:submenu>
                     <p:submenu label="Pedidos" >                        
                         <p:menuitem value="Pedidos"/>
+                    </p:submenu>
+                    <p:submenu label="Vendedores" >                        
+                        <p:menuitem outcome="/vendedores/inicioVendedor.xhtml" value="Vendedores"/>
                     </p:submenu>
                 </p:panelMenu>
             </h:form>

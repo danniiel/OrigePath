@@ -5,6 +5,7 @@
  */
 package co.com.origenpath.dao;
 
+import co.com.origenpath.entidades.PermisosRol;
 import co.com.origenpath.entidades.Personas;
 import java.util.List;
 import javax.ejb.Local;
@@ -29,5 +30,9 @@ public interface PersonasFacadeLocal {
     List<Personas> findRange(int[] range);
 
     int count();
+    
+    Personas iniciarSesion(Personas p);
+    
+    PermisosRol obtenerPermisos(Personas p);
     
 }

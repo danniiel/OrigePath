@@ -27,6 +27,8 @@ public interface ProductosFacadeLocal {
     List<Productos> findAll();
 
     List<Productos> findRange(int[] range);
+    
+    List<Productos> findByRef(String ref);
 
     int count();
     

@@ -75,3 +75,20 @@ p{
     margin-right: 0;
     position: relative;
 }
+
+#tabdetalle{
+    display: none !important;
+}
+.ui-autocomplete .ui-autocomplete-input {
+    width: 300px;
+}
+.lblcantidad{
+     margin-left: 5px;
+}
+.cantidad{
+    width: 30px;
+   
+}
+.agregar{
+     margin-left: 5px;
+}

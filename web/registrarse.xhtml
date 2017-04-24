@@ -1,0 +1,125 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+        <h:outputStylesheet library="css" name="bootstrap.min.css"/>
+        <h:outputStylesheet library="css" name="estilo.css" />
+    </h:head>
+    <h:body>
+        <h:form>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <p:outputLabel for="cedula" >Cedula</p:outputLabel>
+                            <p:inputText id="cedula" class="form-control" value="#{personasControlador.personas.cedula}" required="true"/>
+                        </div>
+                        <div class="form-group">
+                            <p:outputLabel for="primer_Apellido" >Primer Apellido</p:outputLabel>
+                            <p:inputText id="primer_Apellido" class="form-control" value="#{personasControlador.personas.primerApellido}" required="true"/>
+                        </div>
+                        <div class="form-group">
+                            <p:outputLabel for="fecha_Nacimiento" >Fecha Nacimiento</p:outputLabel>
+                            <p:calendar id="fecha_Nacimiento" style="width: 100%;" value="#{personasControlador.personas.fechaNacimiento}" navigator="true" pattern="dd/MMM/yyyy" required="true"/>
+                        </div>
+                        <div class="form-group">
+                            <p:outputLabel for="estado_Civil" >Estado Civil</p:outputLabel>
+                            <p:selectOneMenu  id="estado_Civil" style="width: 100%" value="#{personasControlador.personas.estadoCivil}" converter="#{estadoCivilConverter}" required="true">
+                                <f:selectItem itemLabel="--Seleccione--"/>
+                                <f:selectItems value="#{personasControlador.estadoCiviles}" var="ecivil" itemLabel="#{ecivil.nombreEstadoCivil}" itemValue="#{ecivil}"/>
+                            </p:selectOneMenu>
+                        </div>
+                        <div class="form-group">
+                            <p:outputLabel for="celular" >Celular</p:outputLabel>
+                            <p:inputText id="celular" class="form-control" value="#{personasControlador.personas.celular}"/>
+                        </div>
+                        <div class="form-group">
+                            <p:outputLabel for="barrio" >Barrio</p:outputLabel>
+                            <p:selectOneMenu id="barrio" style="width: 100%" value="#{personasControlador.personas.barrio}" converter="#{barrioConverter}">
+                                <f:selectItem itemLabel="--Seleccione--"/>
+                                <f:selectItems value="#{personasControlador.barrios}" var="barrio" itemLabel="#{barrio.nombreBarrio}" itemValue="#{barrio}"/>
+                            </p:selectOneMenu>
+                        </div>
+                        <div class="form-group">
+                            <p:outputLabel for="nivel_Educacion" >Nivel Educacion</p:outputLabel>
+                            <p:inputText id="nivel_Educacion" class="form-control" value="#{personasControlador.personas.nivelEducacion}"/>
+                        </div>
+                        <div class="form-group">
+                            <p:outputLabel for="referido" >Referido</p:outputLabel>
+                            <p:selectOneMenu id="referido" style="width: 100%" value="#{personasControlador.personas.referido}" converter="#{personaConverter}">
+                                <f:selectItem itemLabel="--Seleccione--"/>
+                                <f:selectItems value="#{personasControlador.listPersonas}" var="referido" itemLabel="#{referido.nombres}" itemValue="#{referido}"/>
+                            </p:selectOneMenu>
+                        </div>
+                        <div class="form-group">
+                            <p:outputLabel for="usuario" >Usuario</p:outputLabel>
+                            <p:inputText id="usuario" class="form-control" value="#{personasControlador.personas.usuario}"/>
+                        </div>
+                        <div class="form-group">
+                            <p:outputLabel for="rol" >Rol</p:outputLabel>
+                            <p:selectOneMenu id="rol" style="width: 100%" value="#{personasControlador.personas.rol}" converter="#{rolConverter}">
+                                <f:selectItem itemLabel="--Seleccione--"/>
+                                <f:selectItems value="#{personasControlador.roles}" var="rol" itemLabel="#{rol.nombreRol}" itemValue="#{rol}"/>
+                            </p:selectOneMenu>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <p:outputLabel for="nombre" >Nombre</p:outputLabel>
+                            <p:inputText id="nombre" class="form-control" value="#{personasControlador.personas.nombres}"/>
+                        </div>
+                        <div class="form-group">
+                            <p:outputLabel for="segudo_Apellido" >Segudo Apellido</p:outputLabel>
+                            <p:inputText id="segudo_Apellido" class="form-control" value="#{personasControlador.personas.segundoApellido}"/>
+                        </div>
+                        <div class="form-group">
+                            <p:outputLabel for="genero" >Genero</p:outputLabel>
+                            <p:selectOneMenu id="genero" style="width: 100%" value="#{personasControlador.personas.genero}" converter="#{generoConverter}" required="true">
+                                <f:selectItem itemLabel="--Seleccione--"/>
+                                <f:selectItems value="#{personasControlador.generos}" var="genero" itemLabel="#{genero.nombreGenero}" itemValue="#{genero}"/>
+                            </p:selectOneMenu>
+                        </div>
+                        <div class="form-group">
+                            <p:outputLabel for="telefono" >Telefono</p:outputLabel>
+                            <p:inputText id="telefono" class="form-control" value="#{personasControlador.personas.telefono}"/>
+                        </div>
+                        <div class="form-group">
+                            <p:outputLabel for="correo" >Correo</p:outputLabel>
+                            <p:inputText id="correo" class="form-control" value="#{personasControlador.personas.correo}"/>
+                        </div>
+                        <div class="form-group">
+                            <p:outputLabel for="direccion" >Direccion</p:outputLabel>
+                            <p:inputText id="direccion" class="form-control" value="#{personasControlador.personas.direccion}"/>
+                        </div>
+                        <div class="form-group">
+                            <p:outputLabel for="ocupacion" >Ocupacion</p:outputLabel>
+                            <p:inputTextarea id="ocupacion" class="form-control" rows="5"  value="#{personasControlador.personas.ocupacion}" rendered="true"/>
+                        </div>
+                        <div class="form-group">
+                            <p:outputLabel for="estado_Persona" >Estado Persona</p:outputLabel>
+                            <p:selectOneMenu id="estado_Persona" style="width: 100%" value="#{personasControlador.personas.estadoPersona}" converter="#{estadoPersonaConverter}" rendered="true">
+                                <f:selectItem itemLabel="--Seleccione--"/> 
+                                <f:selectItems value="#{personasControlador.estadoPersonas}" var="epersona" itemLabel="#{epersona.nombreEstadoPersonas}" itemValue="#{epersona}"/>
+                            </p:selectOneMenu>
+                        </div>
+                        <div class="form-group">
+                            <p:outputLabel for="contraseña" >Contraseña</p:outputLabel>
+                            <p:inputText id="contraseña" class="form-control" value="#{personasControlador.personas.contrasena}"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <p:commandButton class="btn btn-success" value="Guardar Registro" actionListener="#{personasControlador.guardarPersonas()}"/>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+    </h:body>
+</html>
+

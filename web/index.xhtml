@@ -5,14 +5,25 @@
       xmlns:p="http://primefaces.org/ui">
     <h:head>
         <title>Facelet Title</title>
-        <h:outputStylesheet library="css" name="estilo.css" />
+        <h:outputStylesheet library="css" name="bootstrap.min.css"/>
+        <h:outputStylesheet library="css" name="sesion.css" />
     </h:head>
     <h:body>
-        <h:form>
-            <p:menuButton value="Entrar">
-                <p:menuitem value="Entrar" outcome="/administracion/inicio.xhtml" icon="ui-icon-arrowreturnthick-1-e"/>                    
-            </p:menuButton>
-        </h:form>
+        <div class="container">        
+            <h:form class="form-signin">
+                <h2 class="form-signin-heading">Iniciar Sesión</h2>
+                <p:messages autoUpdate="true"/>
+                    <p:outputLabel for="txtUsuario" value="Usuario" class="sr-only"/>
+                    <p:inputText id="txtUsuario" class="form-control" placeholder="Usuario" value="#{sessionControlador.persona.usuario}" required="true"/>
+
+                    <p:outputLabel for="txtContraseña" value="Contraseña" class="sr-only"/>
+                    <p:password id="txtContraseña" class="form-control" placeholder="Contraseña" value="#{sessionControlador.persona.contrasena}" required="true"/>
+
+                    <h:column/>
+                    <p:commandButton class="btn btn-lg btn-primary btn-block" value="Iniciar Sesión" action="#{sessionControlador.sesion()}"/>
+                <p:link outcome="registrarse" value="Registrarse"/>
+            </h:form>
+        </div>
     </h:body>
 </html>
 

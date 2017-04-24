@@ -21,7 +21,8 @@
                 </div>
             </div>
             <h:form id="ftabla">
-                <p:dataTable var="b" id="data" value="#{barrioControlador.listarBarrios()}" paginator="true" rows="10" paginatorPosition="bottom">
+                
+                    <p:dataTable var="b" id="data" value="#{barrioControlador.listarBarrios()}" paginator="true" rows="10" paginatorPosition="bottom">
                     <p:column headerText="Código Barrio">
                         <h:outputText value="#{b.idBarrio}"/>
                     </p:column>

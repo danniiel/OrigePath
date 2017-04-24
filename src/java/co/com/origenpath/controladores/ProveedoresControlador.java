@@ -10,6 +10,7 @@ import co.com.origenpath.dao.ProveedorFacadeLocal;
 import co.com.origenpath.entidades.EstadoProveedor;
 import co.com.origenpath.entidades.Proveedor;
 import co.com.origenpath.utils.jsfUtils;
+import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -25,7 +26,7 @@ import javax.faces.context.FacesContext;
  */
 @ManagedBean
 @ViewScoped
-public class ProveedoresControlador {
+public class ProveedoresControlador implements Serializable{
 
     @EJB
     ProveedorFacadeLocal proveedorFacadeLocal;

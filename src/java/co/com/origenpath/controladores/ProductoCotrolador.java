@@ -5,10 +5,12 @@
  */
 package co.com.origenpath.controladores;
 
+import co.com.origenpath.dao.DetalleKitFacadeLocal;
 import co.com.origenpath.dao.EstadoProductoFacadeLocal;
 import co.com.origenpath.dao.ProductosFacadeLocal;
 import co.com.origenpath.dao.ProveedorFacadeLocal;
 import co.com.origenpath.dao.TipoProductoFacadeLocal;
+import co.com.origenpath.entidades.DetalleKit;
 import co.com.origenpath.entidades.EstadoProducto;
 import co.com.origenpath.entidades.Productos;
 import co.com.origenpath.entidades.Proveedor;
@@ -20,6 +22,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -36,7 +39,9 @@ import javax.faces.event.ActionEvent;
 import javax.faces.event.PhaseId;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.FileUploadEvent;
+import org.primefaces.event.RowEditEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 
@@ -56,26 +61,57 @@ public class ProductoCotrolador implements Serializable {
     ProveedorFacadeLocal proveedorFacadeLocal;
     @EJB
     ProductosFacadeLocal productosFacadeLocal;
+    @EJB
+    DetalleKitFacadeLocal detalleKitFacadeLocal;
 
     private Productos productos;
+    private DetalleKit detalleKit;
     private List<TipoProducto> tipoProductos;
     private List<EstadoProducto> estadoProductos;
     private List<Proveedor> proveedores;
+    private List<DetalleKit> listaDetalle = new ArrayList<>();
 
     private String imagenProducto;
-//    private StreamedContent file;
     private StreamedContent imganeP;
     private String accion;
+    
+    private boolean display;
+    
+    
 
     @PostConstruct
     public void init() {
         productos = new Productos();
+        detalleKit = new DetalleKit();
         tipoProductos = listarTipoProductos();
         estadoProductos = listarEstadoProductos();
         proveedores = listarProveedores();
+        display = false;
+    }
+    
+//    public boolean show(){
+//        return display;
+//    }
+    
+    public void change(javax.faces.event.AjaxBehaviorEvent changeEvent){
+        if(productos.getTipoProducto().getIdTipoProducto().equals(2)){
+        setDisplay(true);    
+        }else{
+            setDisplay(false);
+        }
+        
     }
 
-        
+    public boolean isDisplay() {
+        return display;
+    }
+
+    public void setDisplay(boolean display) {
+        this.display = display;
+    }
+    
+    
+    
     public String getAccion() {
         return accion;
     }
@@ -112,6 +148,23 @@ public class ProductoCotrolador implements Serializable {
         return proveedores;
     }
 
+    
+    public List<DetalleKit> getListaDetalle() {
+        return listaDetalle;
+    }
+
+    public void setListaDetalle(List<DetalleKit> listaDetalle) {
+        this.listaDetalle = listaDetalle;
+    }
+
+    public DetalleKit getDetalleKit() {
+        return detalleKit;
+    }
+
+    public void setDetalleKit(DetalleKit detalleKit) {
+        this.detalleKit = detalleKit;
+    }    
+    
     public void setProveedores(List<Proveedor> proveedores) {
         this.proveedores = proveedores;
     }
@@ -124,27 +177,40 @@ public class ProductoCotrolador implements Serializable {
         this.imagenProducto = imagenProducto;
     }
 
-//    public StreamedContent getFile() {
-//        return file;
-//    }
-//
-//    public void setFile(StreamedContent file) {
-//        this.file = file;
-//    }
+        
 
-//    public StreamedContent getImganeP() {
-//        return imganeP;
-//    }
     public void setImganeP(StreamedContent imganeP) {
         this.imganeP = imganeP;
     }
-
+    
     public void reset(){
         
             productos = new Productos();
             setAccion(null);
             productos.getImagenProducto();
         
+    }
+    public List<Productos> completeStrin(String ref) {
+        List<Productos> results = productosFacadeLocal.findByRef(ref);
+        return results;
+    }
+    
+    public void onRowEdit(RowEditEvent event) {
+        jsfUtils.addSuccessMessage("Cantidad Modificada Con Exito");
+    }
+     
+    public void onRowCancel(RowEditEvent event) {
+        jsfUtils.addSuccessMessage("Cantidad No Modificada");
+    }
+     
+    public void onCellEdit(CellEditEvent event) {
+        Object oldValue = event.getOldValue();
+        Object newValue = event.getNewValue();
+         
+        if(newValue != null && !newValue.equals(oldValue)) {
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Cell Changed", "Old: " + oldValue + ", New:" + newValue);
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+        }
     }
     
     public void operar() {
@@ -158,10 +224,36 @@ public class ProductoCotrolador implements Serializable {
                 break;
         }
     }
+    
+    public int totalKit(){
+        int cant = detalleKit.getCantidadProducto();        
+        int precio = productos.getPrecioVenta();        
+        return cant * precio;
+    }
+    
+    public void agregar(){
+        try{
+            DetalleKit detalle = new DetalleKit();
+            detalle.setCantidadProducto(detalleKit.getCantidadProducto());
+            detalle.setReferenciaProducto(productos);
+            detalle.setValorTotal(totalKit());
+            this.listaDetalle.add(detalle);
+            jsfUtils.addSuccessMessage("Producto Agregado Correctamente");            
+        }catch(Exception e){
+           jsfUtils.addErrorMessage("Error al agregar el producto verifique los datos o pongase en contacto con el adminstrador del sistema"); 
+        }
+    }
 
     public void guardarProducto() {
         try {
             productosFacadeLocal.create(productos);
+            for (DetalleKit det: listaDetalle) {
+                DetalleKit detalleList = new DetalleKit();
+                detalleList.setCantidadProducto(det.getCantidadProducto());
+                detalleList.setReferenciaProducto(det.getReferenciaProducto());
+                detalleList.setValorTotal(det.getValorTotal());
+                detalleKitFacadeLocal.create(detalleList);
+            }
             jsfUtils.addSuccessMessage("Registro Guardado Correctamente");            
         } catch (Exception e) {
             jsfUtils.addErrorMessage("Error al guardar el registro verifique los datos o pongase en contacto con el adminstrador del sistema");

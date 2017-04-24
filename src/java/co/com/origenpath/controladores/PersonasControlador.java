@@ -150,6 +150,7 @@ public class PersonasControlador implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "Registro Guardado Con Exito!"));
         listPersonas = listarPersonas();
     }
+    
 
     public void buscarPersona(String id) {
         Personas per = personasFacadeLocal.find(id);

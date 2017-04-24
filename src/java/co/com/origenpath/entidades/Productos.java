@@ -39,6 +39,7 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Productos.findByPrecioVenta", query = "SELECT p FROM Productos p WHERE p.precioVenta = :precioVenta")
     , @NamedQuery(name = "Productos.findByPrecioCompra", query = "SELECT p FROM Productos p WHERE p.precioCompra = :precioCompra")
     , @NamedQuery(name = "Productos.findByGramos", query = "SELECT p FROM Productos p WHERE p.gramos = :gramos")
+    ,@NamedQuery(name = "Productos.findByRef", query = "SELECT p FROM Productos p WHERE UPPER(p.referenciaProducto) LIKE UPPER(:referenciaProducto)")
     , @NamedQuery(name = "Productos.findByDescripcion", query = "SELECT p FROM Productos p WHERE p.descripcion = :descripcion")})
 public class Productos implements Serializable {
 

@@ -6,9 +6,11 @@
 package co.com.origenpath.dao;
 
 import co.com.origenpath.entidades.Productos;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -23,6 +25,13 @@ public class ProductosFacade extends AbstractFacade<Productos> implements Produc
     @Override
     protected EntityManager getEntityManager() {
         return em;
+    }
+    
+    @Override
+    public List<Productos> findByRef(String ref) {
+        EntityManager em = getEntityManager();
+        Query q = em.createNamedQuery("Productos.findByRef").setParameter("referenciaProducto", "%"+ref+"%");
+        return q.getResultList();
     }
 
     public ProductosFacade() {
